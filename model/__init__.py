@@ -5,7 +5,7 @@ class Config(object):
     """
     def __init__(self):
         self._base_dir = None
-        self._verbosity = None
+        self._verbosity = 5  # defaults to debug mode
 
     @property
     def base_dir(self):
@@ -20,9 +20,19 @@ class Config(object):
     @property
     def verbosity(self):
         """
-        The number of v's specified on the command line (e.g. -vvvv == 4)
+        Interprets the verbosity command line argument and returns an integer that's meaningful to logger.setLevel()
+
+               60 (silent)
+        -v     50 (logging.CRITICAL)
+        -vv    40 (logging.ERROR)
+        -vvv   30 (logging.WARN)
+        -vvvv  20 (logging.INFO)
+        -vvvvv 10 (logging.DEBUG)
+
         """
-        return self._verbosity
+        # Starting with 60 (which will turn off all logging), decrease the level by 10 for each 'v' supplied by the user
+        # The lower the number, the more verbose the logging will be
+        return 60 - self._verbosity * 10
 
     @verbosity.setter
     def verbosity(self, value):

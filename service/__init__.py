@@ -37,7 +37,7 @@ class BaseSpider(object):
         if self._log is None:
             self._log = logging.getLogger("spider")
             self._log.addHandler(logging.StreamHandler)
-            self._log.setLevel(self._get_log_level())
+            self._log.setLevel(self._config.verbosity)
         return self._log
 
     def _get_directory(self):
@@ -58,22 +58,6 @@ class BaseSpider(object):
 
     def _generate_directory_name(self):
         return self._config.base_dir + self._os.sep + str(self._uuid4()) + self._os.sep
-
-    def _get_log_level(self):
-        """
-        Interprets the verbosity command line argument and returns an integer that's meaningful to logger.setLevel()
-
-               60 (silent)
-        -v     50 (logging.CRITICAL)
-        -vv    40 (logging.ERROR)
-        -vvv   30 (logging.WARN)
-        -vvvv  20 (logging.INFO)
-        -vvvvv 10 (logging.DEBUG)
-
-        """
-        # Starting with 60 (which will turn off all logging), decrease the level by 10 for each 'v' supplied by the user
-        # The lower the number, the more verbose the logging will be
-        return 60 - self._config.verbosity * 10
 
     def _get_next_filename(self):
         self._filename += 1
