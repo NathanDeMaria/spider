@@ -54,4 +54,7 @@ class BaseSpider(object):
         specified in the configuration object.
 
         """
-        return self._config.base_dir + self._os.sep + str(self._uuid.uuid4()) + ".pickle"
+        dir = self._config.base_dir
+        if not self._config.base_dir.endswith(self._os.sep):
+            dir += self._os.sep
+        return dir + str(self._uuid.uuid4()) + ".pickle"
