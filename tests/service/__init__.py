@@ -21,7 +21,7 @@ class MockUUID(object):
 
 class BaseSpiderTests(unittest.TestCase):
     def setUp(self):
-        self.spider = BaseSpider(MockConfig())
+        self.spider = BaseSpider(MockConfig(), mock.Mock())
 
     def test_generate_filename(self):
         self.spider._config.base_dir = "/tmp"
