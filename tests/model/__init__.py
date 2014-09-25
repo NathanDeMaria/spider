@@ -17,3 +17,7 @@ class ConfigTests(unittest.TestCase):
     def test_verbosity_2(self):
         self.config.verbosity = 2
         self.assertEqual(self.config.verbosity, logging.ERROR)
+
+    def test_invalid_base_dir(self):
+        with self.assertRaises(ValueError):
+            self.config.base_dir = ""

@@ -2,7 +2,7 @@ from abc import abstractmethod
 import logging
 import os
 import pickle
-from uuid import uuid4
+import uuid
 
 
 class BaseSpider(object):
@@ -14,7 +14,7 @@ class BaseSpider(object):
         self._log = None
         self._config = config
         self._os = os
-        self._uuid4 = uuid4
+        self._uuid = uuid
         self._pickle = pickle
 
     @abstractmethod
@@ -54,4 +54,4 @@ class BaseSpider(object):
         specified in the configuration object.
 
         """
-        return self._config.base_dir + self._os.sep + str(self._uuid4()) + ".pickle"
+        return self._config.base_dir + self._os.sep + str(self._uuid.uuid4()) + ".pickle"
