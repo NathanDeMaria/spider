@@ -1,17 +1,17 @@
 from abc import abstractmethod
-import logging
 import os
 import pickle
 import uuid
 
 
 class BaseSpider(object):
-    def __init__(self, config):
+    def __init__(self, config, log):
         """
         :type config:   model.Config()
+        :type log:      logging.getLogger()
 
         """
-        self._log = None
+        self._log = log
         self._config = config
         self._os = os
         self._uuid = uuid
@@ -36,17 +36,9 @@ class BaseSpider(object):
         """
         assert isinstance(data, dict)
         filename = self._generate_filename()
-        self.log.debug("Writing to file: " + str(filename))
+        self._log.debug("Writing to file: " + str(filename))
         with open(filename, "wb+") as f:
             pickle.dump(data, f)
-
-    @property
-    def log(self):
-        if self._log is None:
-            self._log = logging.getLogger("spider")
-            self._log.addHandler(logging.StreamHandler())
-            self._log.setLevel(self._config.verbosity)
-        return self._log
 
     def _generate_filename(self):
         """

@@ -1,4 +1,5 @@
 import argparse
+import logging
 from model import Config
 from service import BaseSpider
 
@@ -11,10 +12,14 @@ config = Config()
 config.verbosity = args.v
 config.base_dir = args.base_dir
 
+log = logging.getLogger("spider")
+log.addHandler(logging.StreamHandler())
+log.setLevel(config.verbosity)
+
 
 class DemoSpider(BaseSpider):
     def __init__(self, config):
-        super().__init__(config)
+        super().__init__(config, log)
 
     def crawl(self, url=None):
         # do something
