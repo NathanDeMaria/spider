@@ -19,17 +19,16 @@ class BaseSpider(object):
     def crawl(self, *args, **kwargs):
         raise NotImplemented
 
-    def save(self, data, custom_filename=None):
+    def save(self, data):
         """
         :param data:    the results from crawling some resource
         :type data:     dict
-        :param custom_filename:    If not manually set, files will be given incrementing numbers as filenames
-        :type custom_filename:     str
 
         """
         assert isinstance(data, dict)
-        filename = custom_filename if custom_filename is not None else self._get_next_filename()
-        with open(self._get_directory() + filename, "wb+") as f:
+        filename = self._generate_filename()
+        self.log.debug("Writing to file: " + str(filename))
+        with open(filename, "wb+") as f:
             pickle.dump(data, f)
 
     @property
@@ -40,25 +39,5 @@ class BaseSpider(object):
             self._log.setLevel(self._config.verbosity)
         return self._log
 
-    def _get_directory(self):
-        """
-        Chooses a directory name and creates it, if that hasn't been done, and
-        returns the full path with a trailing slash.
-
-        """
-        if self._directory is None:
-            directory = self._generate_directory_name()
-            try:
-                self._os.makedirs(directory)
-            except OSError:
-                pass
-            finally:
-                self._directory = directory
-        return self._directory
-
-    def _generate_directory_name(self):
-        return self._config.base_dir + self._os.sep + str(self._uuid4()) + self._os.sep
-
-    def _get_next_filename(self):
-        self._filename += 1
-        return str(self._filename)
+    def _generate_filename(self):
+        return self._config.base_dir + self._os.sep + str(self._uuid4()) + ".pickle"
