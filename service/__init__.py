@@ -7,6 +7,10 @@ from uuid import uuid4
 
 class BaseSpider(object):
     def __init__(self, config):
+        """
+        :type config:   model.Config()
+
+        """
         self._log = None
         self._config = config
         self._os = os
@@ -16,7 +20,8 @@ class BaseSpider(object):
     @abstractmethod
     def crawl(self, **kwargs):
         """
-        This method can ONLY accept keyword arguments.
+        This method can ONLY accept keyword arguments. BaseSpider.save() should be called at some
+        point during its execution.
 
         """
         raise NotImplemented
@@ -39,7 +44,7 @@ class BaseSpider(object):
     def log(self):
         if self._log is None:
             self._log = logging.getLogger("spider")
-            self._log.addHandler(logging.StreamHandler)
+            self._log.addHandler(logging.StreamHandler())
             self._log.setLevel(self._config.verbosity)
         return self._log
 

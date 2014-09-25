@@ -36,6 +36,4 @@ class Config(object):
 
     @verbosity.setter
     def verbosity(self, value):
-        if value is None or not isinstance(value, int):
-            raise ValueError("Invalid log level setting")
-        self._verbosity = value
+        self._verbosity = int(value)
