@@ -4,8 +4,8 @@ from model import Config
 from service import BaseSpider
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--base_dir', help='The directory where the results file will be written')
-parser.add_argument('-v', action='count', help='Increase the verbosity of log messages')
+parser.add_argument('--base-dir', help='The directory where the results file will be written')
+parser.add_argument('-v', action='count', default=0, help='Increase the verbosity of log messages')
 args = parser.parse_args()
 
 config = Config()
