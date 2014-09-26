@@ -27,6 +27,7 @@ class BaseSpiderTests(unittest.TestCase):
         self.spider._config.base_dir = "/tmp"
         self.spider._uuid.uuid4 = mock.Mock()
         self.spider._uuid.uuid4.return_value = "lol123"
+        self.spider._os = MockOS()
         expected = "/tmp/lol123.pickle"
         self.assertEqual(self.spider._generate_filename(), expected)
 
@@ -34,5 +35,6 @@ class BaseSpiderTests(unittest.TestCase):
         self.spider._config.base_dir = "/tmp/"
         self.spider._uuid.uuid4 = mock.Mock()
         self.spider._uuid.uuid4.return_value = "lol123"
+        self.spider._os = MockOS()
         expected = "/tmp/lol123.pickle"
         self.assertEqual(self.spider._generate_filename(), expected)
